@@ -11,6 +11,7 @@ module.exports = {
         dark: "#34495e",
         text: "#191C1E",
         subText: "#757779",
+        formFieldText: "#444749",
       },
     },
     fontFamily: {
