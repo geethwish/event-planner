@@ -2,6 +2,7 @@ import Avatar from '@/components/shared/avatar';
 import ImageDescriptionCard from '@/components/shared/image-description-card';
 import OrganizerCard from '@/components/shared/organizer-card';
 import SectionTitle from '@/components/shared/section-title';
+import { Link } from 'expo-router';
 import { Image, StyleSheet, Platform, View, Text, FlatList } from 'react-native';
 
 export default function HomeScreen() {
@@ -151,9 +152,12 @@ export default function HomeScreen() {
         <Text className='font-interSans font-600 text-primary text-[19px] text-center'>
           16
         </Text>
-        <Text className='text-base font-natoSan600 text-subText text-center'>
-          posts
-        </Text>
+        <Link href='/posts'>
+          <Text className='text-base font-natoSan600 text-subText text-center'>
+            posts
+          </Text>
+        </Link>
+
       </View>
     </View>
   );
