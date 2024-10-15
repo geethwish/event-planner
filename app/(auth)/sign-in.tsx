@@ -31,6 +31,7 @@ const SignIn = () => {
     // Handle login
     const handleLogin = (values: any) => {
         console.log(values)
+        router.push('/upload-profile-picture')
     }
 
     return (

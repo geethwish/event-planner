@@ -4,6 +4,8 @@ import email from "../assets/icons/email.png";
 import lock from "../assets/icons/lock.png";
 import rightArrow from "../assets/icons/rightArrow.png";
 import rightUpArrow from "../assets/icons/rightUpArrow.png";
+import camera from "../assets/icons/camera.png";
+
 export default {
   eye,
   email,
@@ -11,4 +13,5 @@ export default {
   hideEye,
   rightArrow,
   rightUpArrow,
+  camera,
 };
