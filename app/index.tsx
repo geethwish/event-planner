@@ -8,7 +8,7 @@ export default function App() {
         <SafeAreaView className="bg-light h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 <View className='w-full '>
-                    <Text>App</Text>
+                    <Link href={"/home"} style={{ color: 'blue' }}>Home</Link>
                     <Link href={"/sign-in"} style={{ color: 'blue' }}>Start</Link>
                 </View>
             </ScrollView>

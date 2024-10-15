@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 interface ICustomButtonProps {
     onPress: () => void
     label: string | React.ReactElement,
-    variant?: 'Button' | 'Link'
+    variant?: 'Button' | 'Link' | 'Icon',
     classNames: string
 }
 const CustomButton: FC<ICustomButtonProps> = ({ onPress, label, variant = 'Button', classNames }) => {
