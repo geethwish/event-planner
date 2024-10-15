@@ -14,7 +14,7 @@ const CustomButton: FC<ICustomButtonProps> = ({ onPress, label, variant = 'Butto
             className={`w-full h-12 bg-primary rounded-sm flex justify-center items-center ${classNames}`}
             onPress={onPress}
         >
-            <Text className="text-white font-natoSan600 ont-600 text-sm">{label}</Text>
+            <Text className="text-white font-natoSan600 text-sm [&:nth-child(2)]:ml-2">{label}</Text>
 
         </TouchableOpacity>
     }

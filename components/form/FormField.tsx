@@ -30,7 +30,7 @@ const FormField: FC<IFormFieldProps> = ({ label, value, onChangeText, placeholde
                 }
 
                 <TextInput
-                    className={`w-full h-12 border bg-secondary border-secondary rounded-sm ${icon !== undefined ? 'px-12' : 'px-5'} ${touched && error ? 'mb-1 border-danger' : 'mb-4  border-b-gray-300/5'} mb-4 text-formFieldText font-natoSan400 font-400 text-sm border-b-2`}
+                    className={`w-full h-12 border border-b-1 bg-secondary border-secondary rounded-sm ${icon !== undefined ? 'px-12' : 'px-5'} ${touched && error ? 'mb-1 border-danger' : 'mb-4  border-b-gray-300'} mb-4 text-formFieldText font-natoSan400 font-400 text-base`}
                     placeholderTextColor="#A0A0A0"
                     placeholder={placeholder}
                     value={value}
@@ -49,7 +49,7 @@ const FormField: FC<IFormFieldProps> = ({ label, value, onChangeText, placeholde
                     </TouchableOpacity>
                 }
             </View>
-            {touched && error && <Text className='text-danger mb-3 ml-4'>{error}</Text>}
+            {touched && error && <Text className='text-danger mb-3 ml-4 font-natoSan400'>{error}</Text>}
         </View>
     )
 }

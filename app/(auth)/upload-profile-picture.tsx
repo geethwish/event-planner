@@ -41,7 +41,7 @@ const UploadProfilePicture = () => {
             <ScrollView>
                 <View className='w-full min-h-[80vh] px-4 my-6 flex flex-col  justify-between'>
                     <View className='mt-[30%] w-full flex flex-col justify-center items-center'>
-                        <Text className='text-5xl text-text text-center font-interSans font-600'>
+                        <Text className='text-[32px] text-text text-center font-interSans font-600'>
                             Welcome
                         </Text>
                         <Text className='text-subText text-xl text-center mt-5 font-natoSan400'>You are logged in for the first time and can upload a profile photo</Text>

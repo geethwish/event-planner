@@ -40,10 +40,10 @@ const SignUp = () => {
             <ScrollView>
                 <View className='w-full min-h-[80vh] px-4 my-6 flex flex-col justify-between'>
                     <View className='mt-[30%]'>
-                        <Text className='text-5xl text-text text-center font-interSans font-600'>
+                        <Text className='text-[32px] text-text text-center font-interSans font-600'>
                             Welcome
                         </Text>
-                        <Text className='text-subText text-xl text-center mt-5 font-natoSan400'>Welcome to your Portal</Text>
+                        <Text className='text-subText text-sm text-center mt-5 font-natoSan400'>Welcome to your Portal</Text>
                     </View>
                     <Formik
                         initialValues={{ email: '', password: '', confirmPassword: '' }}
