@@ -14,6 +14,8 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
     "Noto-Sans": require('../assets/fonts/noto/Noto-Sans.ttf'),
+    "Noto-Sans-600": require('../assets/fonts/noto/NotoSans-SemiBold.ttf'),
+    "Noto-Sans-400": require('../assets/fonts/noto/NotoSans-Regular.ttf'),
     Inter: require('../assets/fonts/inter/Inter.ttf'),
   });
 

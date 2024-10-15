@@ -16,6 +16,8 @@ module.exports = {
     },
     fontFamily: {
       natoSans: ["Noto-Sans", "sans-serif"],
+      natoSan600: ["NotoSans-SemiBold", "sans-serif"],
+      natoSan400: ["NotoSans-Regular", "sans-serif"],
       interSans: ["Inter", "sans-serif"],
     },
     fontWeight: {
