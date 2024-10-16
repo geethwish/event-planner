@@ -12,7 +12,7 @@ const AuthLayout = () => {
                 <Stack.Screen name="upload-profile-picture" options={{ headerShown: false }} />
                 <Stack.Screen name="personal-information" options={{ headerShown: false }} />
             </Stack>
-            <StatusBar backgroundColor="#161622" style="light" />
+            <StatusBar backgroundColor="#16162" style="light" />
         </>
 
     )

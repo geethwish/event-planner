@@ -1,9 +1,8 @@
-import Avatar from '@/components/shared/avatar';
 import ImageDescriptionCard from '@/components/shared/image-description-card';
 import OrganizerCard from '@/components/shared/organizer-card';
 import SectionTitle from '@/components/shared/section-title';
 import { Link } from 'expo-router';
-import { Image, StyleSheet, Platform, View, Text, FlatList } from 'react-native';
+import { Image, View, Text, FlatList } from 'react-native';
 
 export default function HomeScreen() {
   const images = [
@@ -40,7 +39,7 @@ export default function HomeScreen() {
       "name": "Ervin Howell",
       "username": "Antonette",
       "email": "Shanna@melissa.tv",
-      'profilePic': require('../../assets/images/avatars/user1.png'),
+      'profilePic': require('../../../assets/images/avatars/user1.png'),
       "address": {
         "street": "Victor Plains",
         "suite": "Suite 879",
@@ -64,7 +63,7 @@ export default function HomeScreen() {
       "name": "Kark Howell",
       "username": "Antonette",
       "email": "Shanna@melissa.tv",
-      'profilePic': require('../../assets/images/avatars/user1.png'),
+      'profilePic': require('../../../assets/images/avatars/user1.png'),
       "address": {
         "street": "Victor Plains",
         "suite": "Suite 879",
@@ -88,7 +87,7 @@ export default function HomeScreen() {
       "name": "Kark Howell",
       "username": "Antonette",
       "email": "Shanna@melissa.tv",
-      'profilePic': require('../../assets/images/avatars/user1.png'),
+      'profilePic': require('../../../assets/images/avatars/user1.png'),
       "address": {
         "street": "Victor Plains",
         "suite": "Suite 879",

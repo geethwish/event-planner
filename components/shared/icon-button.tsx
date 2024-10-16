@@ -8,7 +8,7 @@ interface IIconButtonProps {
 }
 const IconButton: FC<IIconButtonProps> = ({ children, onPress }) => {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} className='z-50'>
             {children}
         </TouchableOpacity>
     )

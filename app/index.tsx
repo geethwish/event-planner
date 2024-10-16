@@ -5,6 +5,7 @@ import { Link } from 'expo-router'
 
 export default function App() {
     return (
+
         <SafeAreaView className="bg-light h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 <View className='w-full '>

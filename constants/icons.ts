@@ -12,6 +12,8 @@ import home from "../assets/icons/home.png";
 import profile from "../assets/icons/profile.png";
 import selectedHome from "../assets/icons/selectedHome.png";
 import selectedProfile from "../assets/icons/selectedProfile.png";
+import logout from "../assets/icons/logout.png";
+
 export default {
   eye,
   email,
@@ -27,4 +29,5 @@ export default {
   profile,
   selectedHome,
   selectedProfile,
+  logout,
 };
