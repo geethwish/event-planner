@@ -8,14 +8,15 @@
       ]
     },
     "types": [
-      "nativewind/types"
+      "nativewind/types",
+      "node"
     ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
     "types.d.ts",
+    ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ]
 }
