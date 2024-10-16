@@ -3,9 +3,13 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation, DrawerActions } from '@react-navigation/native';
+import ProfileInfoForm from '@/components/form/profile-info-form';
+import icons from '@/constants/icons';
 
 const profile = () => {
     const navigation = useNavigation();
+
+    const [isEditing, setIsEditing] = React.useState(false);
 
     const handleDrawer = () => {
         try {
@@ -14,16 +18,34 @@ const profile = () => {
             console.error('Failed to open drawer:', error);
         }
     }
+
+    const handleFormModeChange = (status: boolean) => {
+        setIsEditing(status);
+    }
+
+    const handleSubmit = (values: any) => {
+        console.log(values);
+
+    }
     return (
         <SafeAreaView className="bg-white h-full box-border">
-            <ScrollView>
-                <View className='p-4 border-b-2 border-[#E1E2E4]'>
-                    <View className='flex-row items-center'>
-                        <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
+            <View className='p-4 border-b-2 border-[#E1E2E4]'>
+                <View className='flex-row items-center'>
+                    {
+                        !isEditing ? <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
                             <Image source={require('@/assets/images/avatars/user1.png')} className='w-[44px] h-[44px]' />
+                        </TouchableOpacity> : <TouchableOpacity onPress={() => setIsEditing((prev) => !prev)} style={{ zIndex: 1000 }}>
+                            <Image source={icons.backArrow} className='w-[16px] h-[16px]' />
                         </TouchableOpacity>
-                        <Text className='absolute w-full text-center font-interSans font-600 text-[17px]'>Profile</Text>
-                    </View>
+                    }
+
+                    <Text className='absolute w-full text-center font-interSans font-600 text-[17px]'>{isEditing && 'Edit'} Profile</Text>
+                </View>
+            </View>
+            <ScrollView>
+
+                <View>
+                    <ProfileInfoForm onSubmit={handleSubmit} onModeChange={handleFormModeChange} isEditing={isEditing} />
                 </View>
             </ScrollView>
             <StatusBar backgroundColor="#16162" style="dark" />
