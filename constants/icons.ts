@@ -8,7 +8,10 @@ import camera from "../assets/icons/camera.png";
 import backArrow from "../assets/icons/backArrow.png";
 import message from "../assets/icons/message.png";
 import rightArrowPrimary from "../assets/icons/rightArrowPrimary.png";
-
+import home from "../assets/icons/home.png";
+import profile from "../assets/icons/profile.png";
+import selectedHome from "../assets/icons/selectedHome.png";
+import selectedProfile from "../assets/icons/selectedProfile.png";
 export default {
   eye,
   email,
@@ -20,4 +23,8 @@ export default {
   backArrow,
   message,
   rightArrowPrimary,
+  home,
+  profile,
+  selectedHome,
+  selectedProfile,
 };
