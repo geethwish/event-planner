@@ -19,6 +19,7 @@ export const Colors = {
     primary: "#da5e42",
     secondary: "#fcf2f0",
     danger: "#e74c3c",
+    white: "#ffffff",
   },
   dark: {
     text: "#ECEDEE",
