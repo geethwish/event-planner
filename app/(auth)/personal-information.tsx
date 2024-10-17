@@ -21,7 +21,6 @@ const PersonalInformation = () => {
 
     // Handle personal info submit and navigate to home page
     const handlePersonalInfoSubmit = (values: any) => {
-        console.log(values);
         router.push('/home')
 
     }

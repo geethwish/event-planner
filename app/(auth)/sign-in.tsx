@@ -9,10 +9,11 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '@/config/firebaseConfig';
+import { auth, firestore } from '@/config/firebaseConfig';
 import { getErrorMessage } from '@/utils/authentication-errors';
 import MessageAlert from '@/components/shared/message-alert-notification';
-import { setUser } from '@/store/auth-slice';
+import { setAuth, setUser } from '@/store/auth-slice';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 const SignIn = () => {
@@ -36,6 +37,19 @@ const SignIn = () => {
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
 
+    // Get user profile details from firestore using account uid
+    const getUserData = async (uid: string) => {
+        const userDocRef = doc(firestore, 'users', uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+            return userDocSnap.data();
+        } else {
+            setLoginError("No such user!");
+            return null;
+        }
+    };
+
     // Handle login
     const handleLogin = async (values: any) => {
         setLoginError(null);
@@ -45,14 +59,31 @@ const SignIn = () => {
             // Sign in user with firebase auth
             const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
-            // Stop showing loading spinner
-            setIsLoading(false);
+            const user = { email: userCredential.user.email, uid: userCredential.user.uid };
+
+            // get user profile details from firestore
+
+            const profileDetails: any = await getUserData(user.uid)
+
+            const userProfile = {
+                ...user,
+                ...profileDetails
+            }
+
+            delete userProfile.createdAt
 
             // Save user details on global store
-            dispatch(setUser(userCredential.user));
+            dispatch(setUser(userProfile));
+            dispatch(setAuth(userCredential.user));
 
-            // Navigate to upload profile picture page
-            router.push('/upload-profile-picture')
+            setIsLoading(false);
+
+            if (!userProfile.isCompletedInitialSetup) {
+                // Navigate to upload profile picture page
+                router.push('/upload-profile-picture')
+
+            }
+
 
 
         } catch (error: any) {

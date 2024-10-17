@@ -48,7 +48,7 @@ const SignUp = () => {
 
             try {
 
-                // Create userProfile record in firestore
+                // Create userProfile record in firestore and default values added
                 setDoc(doc(firestore, 'users', user.uid), {
                     email: user.email,
                     firstName: '',
