@@ -14,7 +14,7 @@ import { LogBox } from 'react-native';
 import useAuthListener from '@/hooks/useAuthLisnter';
 import { fetchUserProfile, getAuthDetails } from '@/utils/auth';
 import { setUser } from '@/store/auth-slice';
-
+import Toast from 'react-native-toast-message';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -87,6 +87,7 @@ function AppContent() {
         {/* Only display the 'not-found' screen if a user tries to access an undefined route */}
         <Stack.Screen name="+not-found" />
       </Stack>
+      <Toast />
     </ThemeProvider>
   );
 }

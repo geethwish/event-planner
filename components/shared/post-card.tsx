@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import Avatar from './avatar'
 import IconButton from './icon-button'
 import icons from '@/constants/icons'
@@ -7,8 +7,13 @@ import LikeIcon from '../icons/like-icon'
 import { Colors } from '@/constants/Colors'
 import CommentsIcon from '../icons/comments'
 import ActionIcon from '../icons/action'
+import { IPost } from '@/store/posts-slice'
 
-const PostCard = () => {
+interface IPostCardProps {
+    data: IPost
+}
+
+const PostCard: FC<IPostCardProps> = ({ data }) => {
     return (
         <View className='flex-col w-full shadow-2xl bg-white rounded-b-2xl'>
             <Image source={{ uri: 'https://mailrelay.com/wp-content/uploads/2018/03/que-es-un-blog-1.png' }} resizeMode='cover' className='w-full h-[230px] rounded-t-2xl' />
@@ -20,10 +25,10 @@ const PostCard = () => {
 
                 <View>
                     <Text className='font-interSans font-600 text-lg text-formFieldText mt-3'>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        {data.title}
                     </Text>
                     <Text className='font-natoSan400 text-base text-subText text-ellipsis' numberOfLines={2} ellipsizeMode='tail'>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum sunt deleniti eum dolorum quis! Veritatis perspiciatis sed nisi recusandae provident atque reprehenderit quisquam alias in. Voluptatibus eum in quo iusto.
+                        {data.body}
                     </Text>
                 </View>
 

@@ -19,8 +19,8 @@ const ImageDescriptionCard: FC<IImageDescriptionCardProps> = ({ data, lastChild 
                 defaultSource={require('../../assets/images/fallbackImage.png')} />
             <View className={`border-l-2 border-b-2 border-gray-200 w-full h-[170px] ${lastChild ? 'border-r-2' : ''}`}>
                 <View className='flex-col gap-5 p-4 '>
-                    <Text className='font-interSans font-700 text-base'>{data.title}</Text>
-                    <Text>{data.title}</Text>
+                    <Text className='font-interSans font-700 text-base' numberOfLines={2} ellipsizeMode='tail' >{data.title}</Text>
+                    <Text numberOfLines={4} ellipsizeMode='tail' className='font-natoSan400 text-sm text-subText'>{data.title}</Text>
                 </View>
             </View>
 

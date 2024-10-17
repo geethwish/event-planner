@@ -2,117 +2,73 @@ import ImageDescriptionCard from '@/components/shared/image-description-card';
 import OrganizerCard from '@/components/shared/organizer-card';
 import SectionTitle from '@/components/shared/section-title';
 import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Image, View, Text, FlatList } from 'react-native';
+import api from '@/config/axios-config';
+import { useDispatch } from 'react-redux';
+import { setPosts } from '@/store/posts-slice';
 
 export default function HomeScreen() {
-  const images = [
-    {
-      id: '1',
-      url: 'https://picsum.photos/200/300',
-    },
-    {
-      id: '2',
-      url: 'https://picsum.photos/200/400',
-    }
-  ];
+  const dispatch = useDispatch();
+  const [imageList, setImageList] = useState<any[]>([]);
+  const [organizers, setOrganizers] = useState<any[]>([]);
+  const [postsList, setPostsList] = useState<any[]>([]);
 
-  const imageList = [
-    {
-      "albumId": 1,
-      "id": 1,
-      "title": "accusamus beatae ad facilis cum similique qui sunt",
-      "url": "https://via.placeholder.com/600/92c952",
-      "thumbnailUrl": "https://via.placeholder.com/150/92c952"
-    },
-    {
-      "albumId": 1,
-      "id": 3,
-      "title": "officia porro iure quia iusto qui ipsa ut modi",
-      "url": "https://via.placeholder.com/600/24f355",
-      "thumbnailUrl": "https://via.placeholder.com/150/24f355"
-    },
-  ];
 
-  const organizers = [
-    {
-      "id": 2,
-      "name": "Ervin Howell",
-      "username": "Antonette",
-      "email": "Shanna@melissa.tv",
-      'profilePic': require('../../../assets/images/avatars/user1.png'),
-      "address": {
-        "street": "Victor Plains",
-        "suite": "Suite 879",
-        "city": "Wisokyburgh",
-        "zipcode": "90566-7771",
-        "geo": {
-          "lat": "-43.9509",
-          "lng": "-34.4618"
-        }
-      },
-      "phone": "010-692-6593 x09125",
-      "website": "anastasia.net",
-      "company": {
-        "name": "Deckow-Crist",
-        "catchPhrase": "Proactive didactic contingency",
-        "bs": "synergize scalable supply-chains"
-      }
-    },
-    {
-      "id": 3,
-      "name": "Kark Howell",
-      "username": "Antonette",
-      "email": "Shanna@melissa.tv",
-      'profilePic': require('../../../assets/images/avatars/user1.png'),
-      "address": {
-        "street": "Victor Plains",
-        "suite": "Suite 879",
-        "city": "Wisokyburgh",
-        "zipcode": "90566-7771",
-        "geo": {
-          "lat": "-43.9509",
-          "lng": "-34.4618"
-        }
-      },
-      "phone": "010-692-6593 x09125",
-      "website": "anastasia.net",
-      "company": {
-        "name": "Deckow-Crist",
-        "catchPhrase": "Proactive didactic contingency",
-        "bs": "synergize scalable supply-chains"
-      }
-    },
-    {
-      "id": 4,
-      "name": "Kark Howell",
-      "username": "Antonette",
-      "email": "Shanna@melissa.tv",
-      'profilePic': require('../../../assets/images/avatars/user1.png'),
-      "address": {
-        "street": "Victor Plains",
-        "suite": "Suite 879",
-        "city": "Wisokyburgh",
-        "zipcode": "90566-7771",
-        "geo": {
-          "lat": "-43.9509",
-          "lng": "-34.4618"
-        }
-      },
-      "phone": "010-692-6593 x09125",
-      "website": "anastasia.net",
-      "company": {
-        "name": "Deckow-Crist",
-        "catchPhrase": "Proactive didactic contingency",
-        "bs": "synergize scalable supply-chains"
-      }
+  // Fetch users
+  const fetchUsers = async () => {
+    try {
+      const users = (await api.get('/users')).data
+      const selectedUsers = users.slice(0, 5);
+
+      // Add profilePic property to each user
+      const updatedRecords = selectedUsers.map((user: any) => ({
+        ...user,
+        profilePic: require('../../../assets/images/avatars/user1.png'),
+      }));
+
+      setOrganizers(updatedRecords)
+
+    } catch (error) {
+      console.log(error);
+
     }
-  ];
+
+  }
+
+  // Fetch images
+  const fetchImageList = async () => {
+    try {
+      const images = (await api.get('/photos')).data
+      setImageList(images)
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  // Fetch posts
+  const fetchPosts = async () => {
+    try {
+      const posts = (await api.get('/posts')).data
+      setPostsList(posts)
+      dispatch(setPosts(posts))
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+  useEffect(() => {
+    fetchPosts()
+    fetchImageList()
+    fetchUsers()
+  }, [])
 
   const renderHeader = () => (
     <View>
       <FlatList
         horizontal
-        data={images.slice(0, 10)}
+        data={imageList.slice(0, 10)}
         renderItem={({ item }) => (
           <Image source={{ uri: item.url }} className="w-screen min-h-[220px] h-1/4" />
         )}
@@ -149,7 +105,7 @@ export default function HomeScreen() {
       </View>
       <View className='border-b-2 border-b-gray-100 p-5'>
         <Text className='font-interSans font-600 text-primary text-[19px] text-center'>
-          16
+          {postsList.length}
         </Text>
         <Link href='/posts'>
           <Text className='text-base font-natoSan600 text-subText text-center'>

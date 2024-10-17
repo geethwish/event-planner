@@ -5,9 +5,12 @@ import Avatar from '@/components/shared/avatar'
 import CategoryTabItem, { ItemData } from '@/components/shared/category-tab-item'
 import { postCategories } from '@/constants/post-categories'
 import PostCard from '@/components/shared/post-card'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
 
 const Posts = () => {
     const [selectedId, setSelectedId] = React.useState<string | null>('all');
+    const posts = useSelector((state: RootState) => state.posts.posts);
 
     return (
         <SafeAreaView className="bg-white h-full box-border">
@@ -44,8 +47,12 @@ const Posts = () => {
 
                 </View>
 
-                <View className='p-4'>
-                    <PostCard />
+                <View className='p-4 flex-col' style={{ rowGap: 20 }}>
+                    {
+                        posts !== null && posts.map((post, index) => (
+                            <PostCard data={post} key={index} />
+                        ))
+                    }
                 </View>
 
             </ScrollView>
