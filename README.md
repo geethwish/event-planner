@@ -77,6 +77,7 @@ Welcome to the Event Planner App, an Expo-based project designed to help users p
 - Axios - Api request handler
 - Redux Toolkit - Global state management tool
 - Formik - form validator
+- Lottie - Animation library
 
 ## Scripts
 
