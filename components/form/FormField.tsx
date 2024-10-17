@@ -41,7 +41,7 @@ const FormField: FC<IFormFieldProps> = ({ label, value, onChangeText, placeholde
                 {
                     showPassword && <TouchableOpacity onPress={() => setShowPasswordText(!showPasswordText)} className='absolute right-2 top-[14px]'>
                         <Image
-                            source={value.length > 1 && !showPasswordText ? icons.hideEye : icons.eye}
+                            source={!showPasswordText ? icons.hideEye : icons.eye}
                             className='w-[20px] h-[20px]'
                             resizeMode='contain'
                             tintColor={Colors.light.formFieldText}
