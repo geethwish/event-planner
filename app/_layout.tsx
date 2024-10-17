@@ -76,6 +76,7 @@ function AppContent() {
         headerShown: false,
       }}>
         <Stack.Screen name="index" options={{ headerShown: false }} redirect />
+
         {auth ? (
           <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
         ) : (
@@ -84,6 +85,14 @@ function AppContent() {
           }} />
         )}
 
+        <Stack.Screen
+          name="(modal)/comments/[id]"
+          options={{
+            presentation: 'modal',
+            headerShown: false,
+            animation: 'fade',
+          }}
+        />
         {/* Only display the 'not-found' screen if a user tries to access an undefined route */}
         <Stack.Screen name="+not-found" />
       </Stack>

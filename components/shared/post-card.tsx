@@ -8,6 +8,7 @@ import { Colors } from '@/constants/Colors'
 import CommentsIcon from '../icons/comments'
 import ActionIcon from '../icons/action'
 import { IPost } from '@/store/posts-slice'
+import { Link } from 'expo-router'
 
 interface IPostCardProps {
     data: IPost
@@ -34,16 +35,29 @@ const PostCard: FC<IPostCardProps> = ({ data }) => {
 
                 <View className='flex-row items-center justify-between mt-3'>
                     <View className='w-[50%] flex-row  justify-between'>
-                        <Text className='font-natoSan400 text-base text-subText'>Jul 27</Text>
-                        <View className='flex-row items-center'>
-                            <LikeIcon width='20' height='20' fill={Colors.light.subText} />
-                            <Text className='font-natoSan400 text-base text-subText'> 3.2k</Text>
+                        <View >
+                            <Text className='font-natoSan400 text-base text-subText'>Jul 27</Text>
+                        </View>
+                        <View>
+                            <View className='flex-row items-center'>
+                                <LikeIcon width='20' height='20' fill={Colors.light.subText} />
+                                <Text className='font-natoSan400 text-base text-subText'> 3.2k</Text>
+                            </View>
                         </View>
 
-                        <View className='flex-row items-center'>
-                            <CommentsIcon width='20' height='20' fill={Colors.light.subText} />
-                            <Text className='font-natoSan400 text-base text-subText'>12</Text>
+                        <View className='mt-1'>
+                            <Link href={{
+                                pathname: '../../(modal)/comments/[id]',
+                                params: { id: data.id },
+                            }}
+                                className='m-0 p-0'>
+                                <View className='flex-row items-center'>
+                                    <CommentsIcon width='20' height='20' fill={Colors.light.subText} />
+                                    <Text className='font-natoSan400 text-base text-subText'>12</Text>
+                                </View>
+                            </Link>
                         </View>
+
 
                     </View>
                     <IconButton>
