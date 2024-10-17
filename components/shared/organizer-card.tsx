@@ -49,3 +49,4 @@ const OrganizerCard: FC<IOrganizerCardProps> = ({ user }) => {
 }
 
 export default OrganizerCard
+

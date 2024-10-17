@@ -71,5 +71,3 @@ const PostCard: FC<IPostCardProps> = ({ data }) => {
 }
 
 export default PostCard
-
-const styles = StyleSheet.create({})

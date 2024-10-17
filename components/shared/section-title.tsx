@@ -28,3 +28,4 @@ const SectionTitle: FC<ISectionTitleProps> = ({ title, link }) => {
 }
 
 export default SectionTitle
+
