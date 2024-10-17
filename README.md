@@ -1,50 +1,144 @@
-# Welcome to your Expo app 👋
+# Event Planner App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Welcome to the Event Planner App, an Expo-based project designed to help users plan and manage events efficiently. This project leverages various technologies including React Native, Firebase, Redux, and more.
 
-## Get started
+## Table of Contents
 
-1. Install dependencies
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Used Technologies](#tech-stack)
+- [Scripts](#scripts)
+- [Environment Variables](#environment-variables)
+- [Firebase Configuration](#firebase-configuration)
+- [Authentication](#authentication)
+- [Profile Management](#profile-management)
+- [Testing](#testing)
+- [Linting](#linting)
+- [Learn More](#learn-more)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (>= 14.x)
+- npm (>= 6.x) or yarn (>= 1.x)
+- Expo CLI (`npm install -g expo-cli`)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clonehttps://github.com/geethwish/event-planner.git
+   cd event-planner
+   ```
+
+   ### Running the App
+
+   2. Install dependencies:
 
    ```bash
    npm install
+   # or
+   yarn install
    ```
 
-2. Start the app
+   3. Start the development server:
 
    ```bash
-    npx expo start
+   expo start
    ```
 
-In the output, you'll find options to open the app in a
+   ## Project Structure
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   The project structure is as follows:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   ```
+   /event-planner
+   ├── assets
+   ├── components
+   ├── config
+   ├── app
+   ├── constants
+   ├── hooks
+   ├── store
+   ├── utils
+   ```
 
-## Get a fresh project
+## Tech stack
 
-When you're ready, run:
+- React Native
+- Expo
+- Javascript
+- Typescript
+- Tailwind CSS - Styling FrameWork
+- Native Wind - Styling Framework
+- Firebase - Authentication and Database
+- Axios - Api request handler
+- Redux Toolkit - Global state management tool
+- Formik - form validator
 
-```bash
-npm run reset-project
+## Scripts
+
+- `npm start` or `yarn start`: Start the development server.
+- `npm run android` or `yarn android`: Run the app on an Android emulator.
+- `npm run ios` or `yarn ios`: Run the app on an iOS simulator.
+- `npm test` or `yarn test`: Run tests.
+- `npm run lint` or `yarn lint`: Run linter.
+
+## Environment Variables
+
+Create a `.env` file in the root directory and add your environment variables:
+
+```
+FIREBASE_API_KEY=your_api_key
+FIREBASE_AUTH_DOMAIN=your_auth_domain
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_STORAGE_BUCKET=your_storage_bucket
+FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+FIREBASE_APP_ID=your_app_id
+EXPO_PUBLIC_API_URL=your.api.com
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Firebase Configuration
 
-## Learn more
+Ensure you have a Firebase project set up and replace the placeholders in the `.env` file with your actual Firebase configuration.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Authentication
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The app uses Firebase Authentication for user management. Ensure you have enabled the required authentication methods in your Firebase console.
 
-## Join the community
+## Profile Management
 
-Join our community of developers creating universal apps.
+Users can update their profile information within the app. The profile data is stored in Firebase Firestore.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Testing
+
+To run tests, use the following command:
+
+```bash
+npm test
+# or
+yarn test
+```
+
+## Linting
+
+To run the linter, use the following command:
+
+```bash
+npm run lint
+# or
+yarn lint
+```
+
+## Learn More
+
+To learn more about Expo and React Native, check out the following resources:
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/docs/getting-started)
+- [Firebase React Native Documentation](https://rnfirebase.io/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs/installation/)
+
+## Developed By : Geeth Wishkamal
