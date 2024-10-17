@@ -1,4 +1,4 @@
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
@@ -10,6 +10,8 @@ import { RootState } from '@/store';
 import { doc, setDoc } from 'firebase/firestore';
 import { fireStorage, firestore } from '@/config/firebaseConfig';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import Toast from 'react-native-toast-message';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const profile = () => {
     const navigation = useNavigation();
@@ -20,7 +22,7 @@ const profile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isImageUploading, setIsImageUploading] = useState(false);
 
-
+    // Open Side Menu
     const handleDrawer = () => {
         try {
             navigation.dispatch(DrawerActions.openDrawer());
@@ -34,9 +36,6 @@ const profile = () => {
     }
 
     const handleSubmit = async (values: any) => {
-
-        console.log(auth.uid);
-
 
         setIsLoading(true)
 
@@ -66,34 +65,45 @@ const profile = () => {
 
             setIsLoading(false)
             setIsEditing(false)
+            Toast.show({
+                type: "success",
+                text1: "Updated",
+                text2: 'Profile updated successfully',
+            });
         } catch (error: any) {
-            Alert.alert('Error', error.message)
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: error.message,
+            });
             setIsLoading(false)
         }
     }
 
     return (
         <SafeAreaView className="bg-white h-full box-border">
-            <View className='p-4 border-b-2 border-[#E1E2E4]'>
-                <View className='flex-row items-center'>
-                    {
-                        !isEditing ? <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
-                            <Image source={{ uri: profile?.profilePicture ?? '' }} className='w-[44px] h-[44px] rounded-full' />
-                        </TouchableOpacity> : <TouchableOpacity onPress={() => setIsEditing((prev) => !prev)} style={{ zIndex: 1000 }}>
-                            <Image source={icons.backArrow} className='w-[16px] h-[16px]' />
-                        </TouchableOpacity>
-                    }
+            <KeyboardAwareScrollView>
+                <View className='p-4 border-b-2 border-[#E1E2E4]'>
+                    <View className='flex-row items-center'>
+                        {
+                            !isEditing ? <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
+                                <Image source={{ uri: profile?.profilePicture ?? '' }} className='w-[44px] h-[44px] rounded-full' />
+                            </TouchableOpacity> : <TouchableOpacity onPress={() => setIsEditing((prev) => !prev)} style={{ zIndex: 1000 }}>
+                                <Image source={icons.backArrow} className='w-[16px] h-[16px]' />
+                            </TouchableOpacity>
+                        }
 
-                    <Text className='absolute w-full text-center font-interSans font-600 text-[17px]'>{isEditing && 'Edit'} Profile</Text>
+                        <Text className='absolute w-full text-center font-interSans font-600 text-[17px]'>{isEditing && 'Edit'} Profile</Text>
+                    </View>
                 </View>
-            </View>
-            <ScrollView>
+
 
                 <View>
                     <ProfileInfoForm onSubmit={handleSubmit} onModeChange={handleFormModeChange} isEditing={isEditing} data={profile} isLoading={isLoading} handleImageChangeStatus={(status) => { setIsImageUploading(status) }} />
                 </View>
-            </ScrollView>
-            <StatusBar backgroundColor="#16162" style="dark" />
+
+                <StatusBar backgroundColor="#16162" style="dark" />
+            </KeyboardAwareScrollView>
         </SafeAreaView>
 
     )

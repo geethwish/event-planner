@@ -15,6 +15,7 @@ import { getSignUpErrorMessage } from '@/utils/authentication-errors'
 import MessageAlert from '@/components/shared/message-alert-notification'
 import { doc, setDoc } from 'firebase/firestore';
 import profile from '../(drawer)/(tabs)/profile'
+import Toast from 'react-native-toast-message'
 
 const SignUp = () => {
     const dispatch = useDispatch();
@@ -60,13 +61,20 @@ const SignUp = () => {
                     createdAt: new Date()
                 });
 
-                Alert.alert('Success', 'Account created successfully, Please upload your profile picture and continue')
+                Toast.show({
+                    type: "success",
+                    text1: "Success",
+                    text2: 'Account created successfully, Please upload your profile picture and continue',
+                });
 
                 router.push('/upload-profile-picture');
 
-            } catch (error) {
-
-                console.log(error);
+            } catch (error: any) {
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: error.message,
+                });
 
             }
 

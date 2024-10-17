@@ -8,15 +8,20 @@ import CustomButton from '@/components/shared/button';
 import icons from '@/constants/icons';
 import { router } from 'expo-router';
 import { firestore } from '@/config/firebaseConfig';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { doc, setDoc } from 'firebase/firestore';
 import { err } from 'react-native-svg';
 import Loader from '@/components/shared/loader';
+import Toast from 'react-native-toast-message';
+import { fetchUserProfile } from '@/utils/auth';
+import { setUser } from '@/store/auth-slice';
 
 const PersonalInformation = () => {
     const user = useSelector((state: RootState) => state.auth.auth);
     const profile = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch();
+
     const [isLoading, setIsLoading] = useState(false);
 
     // Personal info form schema
@@ -38,10 +43,18 @@ const PersonalInformation = () => {
                 updatedAt: new Date(),
             }, { merge: true });
 
+            const profileDetails = await fetchUserProfile(user.uid);
+
+            dispatch(setUser(profileDetails));
+
             setIsLoading(false)
             router.push('/home')
         } catch (error: any) {
-            Alert.alert('Error', error.message)
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: error.message,
+            });
             setIsLoading(false)
         }
     }
@@ -63,7 +76,7 @@ const PersonalInformation = () => {
         <SafeAreaView className="bg-light h-full box-border">
             <ScrollView>
                 <Formik
-                    initialValues={{ firstName: '', address: '', lastName: '', phoneNumber: '', email: '' }}
+                    initialValues={{ firstName: '', address: '', lastName: '', phoneNumber: '', email: profile.email as string ?? '' }}
                     validationSchema={personalInfoValidationSchema}
                     onSubmit={handlePersonalInfoSubmit}
                 >

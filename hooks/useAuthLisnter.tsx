@@ -12,7 +12,6 @@ const useAuthListener = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 dispatch(setAuth(user));
-
             }
         });
 

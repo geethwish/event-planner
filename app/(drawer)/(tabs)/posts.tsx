@@ -9,6 +9,7 @@ import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
 
 const Posts = () => {
+    const profile = useSelector((state: RootState) => state.auth.user);
     const [selectedId, setSelectedId] = React.useState<string | null>('all');
     const posts = useSelector((state: RootState) => state.posts.posts);
 
@@ -17,9 +18,9 @@ const Posts = () => {
             <ScrollView>
                 <View className='p-4 border-b-2 border-[#E1E2E4]'>
                     <View className='flex-row items-center'>
-                        <Avatar source={require('@/assets/images/avatars/user1.png')} classNames='w-[44px] h-[44px] mr-2' />
+                        <Avatar source={{ uri: profile ? profile.profilePicture : '@/assets/images/avatars/user1.png' }} classNames='w-[44px] h-[44px] mr-2' />
                         <Text className='font-natoSan600 text-base'>
-                            Hey, John
+                            Hey, {profile && profile.firstName || ''}
                         </Text>
                     </View>
 

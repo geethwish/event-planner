@@ -1,5 +1,5 @@
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '@/components/form/FormField';
 import icons from '@/constants/icons';
@@ -15,14 +15,17 @@ import MessageAlert from '@/components/shared/message-alert-notification';
 import { setAuth, setUser } from '@/store/auth-slice';
 import { doc, getDoc } from 'firebase/firestore';
 import { fetchUserProfile, storeAuthDetails } from '@/utils/auth';
+import Loader from '@/components/shared/loader';
 
 
 const SignIn = () => {
-    const [loginError, setLoginError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-
     const dispatch = useDispatch();
 
+    const [loginError, setLoginError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
+
+    // Handle restore password
     const handleRestorePassword = () => {
 
     };
@@ -38,6 +41,18 @@ const SignIn = () => {
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
 
+    // Added a Page loader animation Manually
+    useEffect(() => {
+        if (pageLoading) {
+            setTimeout(() => {
+                setPageLoading(false);
+
+                // Navigate to home page
+                router.push('/home')
+            }, 10000);
+
+        }
+    }, [pageLoading])
 
 
     // Handle login
@@ -81,8 +96,7 @@ const SignIn = () => {
                 router.push('/upload-profile-picture')
 
             } else {
-                // Navigate to home page
-                router.push('/home')
+                setPageLoading(true);
             }
 
 
@@ -95,6 +109,12 @@ const SignIn = () => {
             setIsLoading(false);
         }
 
+    }
+
+    if (pageLoading) {
+        return <SafeAreaView className="bg-light h-full box-border">
+            <Loader />
+        </SafeAreaView>
     }
 
     return (
