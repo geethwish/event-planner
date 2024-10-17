@@ -19,9 +19,9 @@ export const getAuthDetails = async () => {
   }
 };
 
-export const removeToken = async () => {
+export const removeUserProfile = async () => {
   try {
-    await AsyncStorage.removeItem("@user_token");
+    await AsyncStorage.removeItem("user");
   } catch (error) {
     console.error("Error removing token", error);
   }

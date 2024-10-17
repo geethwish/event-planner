@@ -1,5 +1,5 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -7,12 +7,19 @@ import ProfileInfoForm from '@/components/form/profile-info-form';
 import icons from '@/constants/icons';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { doc, setDoc } from 'firebase/firestore';
+import { fireStorage, firestore } from '@/config/firebaseConfig';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 const profile = () => {
     const navigation = useNavigation();
     const profile = useSelector((state: RootState) => state.auth.user);
+    const auth = useSelector((state: RootState) => state.auth.auth);
 
-    const [isEditing, setIsEditing] = React.useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isImageUploading, setIsImageUploading] = useState(false);
+
 
     const handleDrawer = () => {
         try {
@@ -26,9 +33,43 @@ const profile = () => {
         setIsEditing(status);
     }
 
-    const handleSubmit = (values: any) => {
-        console.log(values);
+    const handleSubmit = async (values: any) => {
 
+        console.log(auth.uid);
+
+
+        setIsLoading(true)
+
+        let downloadURL = profile.profilePicture;
+
+        if (isImageUploading) {
+
+            const response = await fetch(values.profilePicture);
+            const blob = await response.blob();
+
+            // Upload the image to firebase storage
+            const imageRef = ref(fireStorage, `profilePictures/${auth.uid}`);
+
+            // Create image upload task
+            const uploadTask = await uploadBytesResumable(imageRef, blob);
+
+            // Get the download URL
+            downloadURL = await getDownloadURL(uploadTask.ref);
+
+        }
+        try {
+            await setDoc(doc(firestore, 'users', auth.uid), {
+                ...values,
+                updatedAt: new Date(),
+                profilePicture: downloadURL
+            }, { merge: true });
+
+            setIsLoading(false)
+            setIsEditing(false)
+        } catch (error: any) {
+            Alert.alert('Error', error.message)
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -37,7 +78,7 @@ const profile = () => {
                 <View className='flex-row items-center'>
                     {
                         !isEditing ? <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
-                            <Image source={{ uri: profile.profilePicture ?? '' }} className='w-[44px] h-[44px] rounded-full' />
+                            <Image source={{ uri: profile?.profilePicture ?? '' }} className='w-[44px] h-[44px] rounded-full' />
                         </TouchableOpacity> : <TouchableOpacity onPress={() => setIsEditing((prev) => !prev)} style={{ zIndex: 1000 }}>
                             <Image source={icons.backArrow} className='w-[16px] h-[16px]' />
                         </TouchableOpacity>
@@ -49,7 +90,7 @@ const profile = () => {
             <ScrollView>
 
                 <View>
-                    <ProfileInfoForm onSubmit={handleSubmit} onModeChange={handleFormModeChange} isEditing={isEditing} />
+                    <ProfileInfoForm onSubmit={handleSubmit} onModeChange={handleFormModeChange} isEditing={isEditing} data={profile} isLoading={isLoading} handleImageChangeStatus={(status) => { setIsImageUploading(status) }} />
                 </View>
             </ScrollView>
             <StatusBar backgroundColor="#16162" style="dark" />

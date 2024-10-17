@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { Formik } from 'formik'
 import * as Yup from 'yup';
@@ -7,16 +7,27 @@ import CustomButton from '../shared/button';
 import Avatar from '../shared/avatar';
 import ProfilePicturePicker from '../shared/profile-picture-picker';
 import * as ImagePicker from 'expo-image-picker';
+import profile from '@/app/(drawer)/(tabs)/profile';
 
 interface IProfileInfoFormProps {
     onSubmit: ([key]: any) => void;
     onModeChange: (status: boolean) => void;
+    handleImageChangeStatus: (status: boolean) => void;
     isEditing: boolean;
+    isLoading: boolean;
+    data: {
+        firstName: string
+        lastName: string
+        phoneNumber: string
+        address: string
+        email: string
+        profilePicture: string
+    }
 }
 
-const ProfileInfoForm: FC<IProfileInfoFormProps> = ({ onSubmit, onModeChange, isEditing }) => {
+const ProfileInfoForm: FC<IProfileInfoFormProps> = ({ onSubmit, onModeChange, isEditing, data, isLoading, handleImageChangeStatus }) => {
 
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<string | null>(data.profilePicture ?? null);
 
     const personalInfoValidationSchema = Yup.object().shape({
         firstName: Yup.string().required('First name is required'),
@@ -39,24 +50,30 @@ const ProfileInfoForm: FC<IProfileInfoFormProps> = ({ onSubmit, onModeChange, is
 
         if (!result.canceled) {
             setImage(result.assets[0].uri);
+            handleImageChangeStatus(true);
+        } else {
+            handleImageChangeStatus(false);
         }
     }
     const handleEditForm = () => {
         onModeChange(!isEditing);
     }
 
+    const handleSubmit = async (values: any) => {
+        onSubmit({ ...values, profilePicture: image })
+    }
     return (
         <Formik
-            initialValues={{ firstName: '', address: '', lastName: '', phoneNumber: '', email: '' }}
+            initialValues={{ ...data }}
             validationSchema={personalInfoValidationSchema}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
 
                 <View className='w-full px-4 my-6 flex flex-col'>
                     <View className='flex-row items-center justify-center mb-5'>
                         {
-                            !isEditing ? <Avatar source={require('./../../assets/images/avatars/user1.png')} classNames='w-[116px] h-[116px]' /> : <ProfilePicturePicker onPress={pickImage} image={image} classNames='mt-0' />
+                            !isEditing ? <Avatar source={{ uri: data.profilePicture ?? '' }} classNames='w-[116px] h-[116px]' /> : <ProfilePicturePicker onPress={pickImage} image={image} classNames='mt-0' />
                         }
 
                     </View>
@@ -128,7 +145,12 @@ const ProfileInfoForm: FC<IProfileInfoFormProps> = ({ onSubmit, onModeChange, is
                                 classNames='w-full'
                             /> : <CustomButton
                                 onPress={handleSubmit}
-                                label={"Save"}
+                                label={
+                                    isLoading ? (
+                                        <ActivityIndicator color="white" />
+                                    ) : (
+                                        <>Save </>)
+                                }
                                 variant='Button'
                                 classNames='w-full'
                             />

@@ -34,6 +34,7 @@ const PersonalInformation = () => {
         try {
             await setDoc(doc(firestore, 'users', user.uid), {
                 ...values,
+                isCompletedInitialSetup: true,
                 updatedAt: new Date(),
             }, { merge: true });
 

@@ -80,6 +80,9 @@ const SignIn = () => {
                 // Navigate to upload profile picture page
                 router.push('/upload-profile-picture')
 
+            } else {
+                // Navigate to home page
+                router.push('/home')
             }
 
 

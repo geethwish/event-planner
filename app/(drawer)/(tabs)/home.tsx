@@ -69,8 +69,14 @@ export default function HomeScreen() {
       <FlatList
         horizontal
         data={imageList.slice(0, 10)}
-        renderItem={({ item }) => (
-          <Image source={{ uri: item.url }} className="w-screen min-h-[220px] h-1/4" />
+        renderItem={({ item, index }) => (
+          <>
+            <Image source={{ uri: item.url }} className="w-screen min-h-[220px] h-1/4" />
+            <View className='absolute right-3 bottom-4 min-w-4 bg-white p-2 rounded-sm'>
+              <Text className='text-sm font-natoSan400 text-subText'> {index + 1} / {10}</Text>
+            </View>
+          </>
+
         )}
         keyExtractor={item => item.id.toString()}
       />

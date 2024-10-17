@@ -1,10 +1,16 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import Avatar from './shared/avatar'
 import icons from '@/constants/icons'
+import { removeUserProfile } from '@/utils/auth'
+import { router } from 'expo-router'
 
 const CustomDrawerContent: FC<DrawerContentComponentProps> = () => {
+    const handleLogout = async () => {
+        await removeUserProfile();
+        router.push('/sign-in');
+    }
     return (
         <DrawerContentScrollView className='bg-white relative box-border'>
             <View className='p-4 border-b-2 border-[#E1E2E4] mt-[-5px]'>
@@ -23,9 +29,11 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = () => {
                 }}
                 label={() => {
                     return (
-                        <View className='flex-row items-center'>
-                            <Text className='ml-[-10px] font-natoSan600 text-base text-[#DB2424]'>Logout</Text>
-                        </View>
+                        <TouchableOpacity onPress={handleLogout}>
+                            <View className='flex-row items-center'>
+                                <Text className='ml-[-10px] font-natoSan600 text-base text-[#DB2424]'>Logout</Text>
+                            </View>
+                        </TouchableOpacity>
                     )
                 }}
                 onPress={() => { }}
