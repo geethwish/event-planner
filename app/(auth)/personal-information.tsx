@@ -1,5 +1,5 @@
-import { Image, ScrollView, Text, View } from 'react-native'
-import React from 'react'
+import { Alert, Image, ScrollView, Text, View } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -7,8 +7,17 @@ import FormField from '@/components/form/FormField';
 import CustomButton from '@/components/shared/button';
 import icons from '@/constants/icons';
 import { router } from 'expo-router';
+import { firestore } from '@/config/firebaseConfig';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { doc, setDoc } from 'firebase/firestore';
+import { err } from 'react-native-svg';
+import Loader from '@/components/shared/loader';
 
 const PersonalInformation = () => {
+    const user = useSelector((state: RootState) => state.auth.auth);
+    const profile = useSelector((state: RootState) => state.auth.user);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Personal info form schema
     const personalInfoValidationSchema = Yup.object().shape({
@@ -20,14 +29,33 @@ const PersonalInformation = () => {
     });
 
     // Handle personal info submit and navigate to home page
-    const handlePersonalInfoSubmit = (values: any) => {
-        router.push('/home')
+    const handlePersonalInfoSubmit = async (values: any) => {
+        setIsLoading(true)
+        try {
+            await setDoc(doc(firestore, 'users', user.uid), {
+                ...values,
+                updatedAt: new Date(),
+            }, { merge: true });
 
+            setIsLoading(false)
+            router.push('/home')
+        } catch (error: any) {
+            Alert.alert('Error', error.message)
+            setIsLoading(false)
+        }
     }
 
     // Handle navigate to previous page
     const handleNavigateToPrevious = () => {
         router.push('/upload-profile-picture')
+    }
+
+    if (isLoading) {
+        return <SafeAreaView className="bg-light h-full box-border">
+            <ScrollView>
+            </ScrollView>
+            <Loader />
+        </SafeAreaView>
     }
 
     return (
