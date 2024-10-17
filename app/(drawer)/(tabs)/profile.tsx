@@ -5,9 +5,12 @@ import { StatusBar } from 'expo-status-bar'
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import ProfileInfoForm from '@/components/form/profile-info-form';
 import icons from '@/constants/icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const profile = () => {
     const navigation = useNavigation();
+    const profile = useSelector((state: RootState) => state.auth.user);
 
     const [isEditing, setIsEditing] = React.useState(false);
 
@@ -27,13 +30,14 @@ const profile = () => {
         console.log(values);
 
     }
+
     return (
         <SafeAreaView className="bg-white h-full box-border">
             <View className='p-4 border-b-2 border-[#E1E2E4]'>
                 <View className='flex-row items-center'>
                     {
                         !isEditing ? <TouchableOpacity onPress={handleDrawer} style={{ zIndex: 1000 }}>
-                            <Image source={require('@/assets/images/avatars/user1.png')} className='w-[44px] h-[44px]' />
+                            <Image source={{ uri: profile.profilePicture ?? '' }} className='w-[44px] h-[44px] rounded-full' />
                         </TouchableOpacity> : <TouchableOpacity onPress={() => setIsEditing((prev) => !prev)} style={{ zIndex: 1000 }}>
                             <Image source={icons.backArrow} className='w-[16px] h-[16px]' />
                         </TouchableOpacity>

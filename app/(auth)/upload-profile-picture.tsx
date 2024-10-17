@@ -12,14 +12,11 @@ import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase
 import { fireStorage, firestore } from '@/config/firebaseConfig';
 import { updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import Loader from '@/components/shared/loader';
 
 
 const UploadProfilePicture = () => {
     const user = useSelector((state: RootState) => state.auth.auth);
     const userProfile = useSelector((state: RootState) => state.auth.user);
-
-    console.log(user);
 
     const [image, setImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);

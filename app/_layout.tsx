@@ -2,22 +2,30 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack, useNavigation } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { RootState } from '@/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import { LogBox } from 'react-native';
+import useAuthListener from '@/hooks/useAuthLisnter';
+import { fetchUserProfile, getAuthDetails } from '@/utils/auth';
+import { setUser } from '@/store/auth-slice';
+
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 function AppContent() {
+  useAuthListener();
+  const dispatch = useDispatch();
+
   const colorScheme = useColorScheme();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const [auth, setAuth] = useState<any | null>(null);
+
   LogBox.ignoreAllLogs();
 
   const [loaded, error] = useFonts({
@@ -34,6 +42,30 @@ function AppContent() {
     }
   }, [loaded, error]);
 
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const profileData = await getAuthDetails();
+      if (profileData) {
+
+        const profileDataObject = JSON.parse(profileData)
+
+        setAuth(profileDataObject)
+        try {
+          const user = await fetchUserProfile(profileDataObject.uid)
+          dispatch(setUser(user))
+        } catch (error) {
+          throw Error("User not found");
+        }
+
+      } else {
+        setAuth(null)
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   if (!loaded && !error) {
     return null;
   }
@@ -44,7 +76,7 @@ function AppContent() {
         headerShown: false,
       }}>
         <Stack.Screen name="index" options={{ headerShown: false }} redirect />
-        {user ? (
+        {auth ? (
           <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
         ) : (
           <Stack.Screen name="(auth)" options={{

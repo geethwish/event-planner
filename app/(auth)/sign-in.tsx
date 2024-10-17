@@ -14,6 +14,7 @@ import { getErrorMessage } from '@/utils/authentication-errors';
 import MessageAlert from '@/components/shared/message-alert-notification';
 import { setAuth, setUser } from '@/store/auth-slice';
 import { doc, getDoc } from 'firebase/firestore';
+import { fetchUserProfile, storeAuthDetails } from '@/utils/auth';
 
 
 const SignIn = () => {
@@ -37,18 +38,7 @@ const SignIn = () => {
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
 
-    // Get user profile details from firestore using account uid
-    const getUserData = async (uid: string) => {
-        const userDocRef = doc(firestore, 'users', uid);
-        const userDocSnap = await getDoc(userDocRef);
 
-        if (userDocSnap.exists()) {
-            return userDocSnap.data();
-        } else {
-            setLoginError("No such user!");
-            return null;
-        }
-    };
 
     // Handle login
     const handleLogin = async (values: any) => {
@@ -59,11 +49,19 @@ const SignIn = () => {
             // Sign in user with firebase auth
             const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
+            await storeAuthDetails(userCredential.user);
+
             const user = { email: userCredential.user.email, uid: userCredential.user.uid };
 
             // get user profile details from firestore
+            let profileDetails: any;
 
-            const profileDetails: any = await getUserData(user.uid)
+            try {
+                profileDetails = await fetchUserProfile(user.uid);
+
+            } catch (error) {
+                setLoginError('User profile not found');
+            }
 
             const userProfile = {
                 ...user,
