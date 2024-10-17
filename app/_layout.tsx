@@ -10,6 +10,7 @@ import { RootState } from '@/store';
 import { useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
+import { LogBox } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +18,7 @@ SplashScreen.preventAutoHideAsync();
 function AppContent() {
   const colorScheme = useColorScheme();
   const user = useSelector((state: RootState) => state.auth.user);
+  LogBox.ignoreAllLogs();
 
   const [loaded, error] = useFonts({
     "Noto-Sans": require('../assets/fonts/noto/Noto-Sans.ttf'),

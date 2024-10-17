@@ -16,7 +16,7 @@ const MessageAlert: FC<IMessageAlertProps> = ({ message, variant = "success", cl
             return 'bg-blue-400'
         }
         if (variant === 'error') {
-            return 'bg-secondary'
+            return 'bg-red-200'
         }
         if (variant === 'warning') {
             return 'bg-orange-400'

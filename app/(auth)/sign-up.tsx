@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, ActivityIndicator, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '@/components/form/FormField'
@@ -7,9 +7,19 @@ import CustomButton from '@/components/shared/button'
 import { router } from 'expo-router'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth, firestore } from '@/config/firebaseConfig'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/store/auth-slice'
+import { getSignUpErrorMessage } from '@/utils/authentication-errors'
+import MessageAlert from '@/components/shared/message-alert-notification'
+import { doc, setDoc } from 'firebase/firestore';
+import profile from '../(drawer)/(tabs)/profile'
 
 const SignUp = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const dispatch = useDispatch();
+    const [registerError, setRegisterError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Signup form schema
     const signupValidationSchema = Yup.object().shape({
@@ -25,10 +35,53 @@ const SignUp = () => {
     });
 
     // Handle signup
-    const handleSingUp = (values: any) => {
-        console.log(values);
+    const handleSingUp = async (values: any) => {
+        setRegisterError(null);
+        setIsLoading(true);
+
+        try {
+            // Create user with firebase auth
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const user = { email: userCredential.user.email, uid: userCredential.user.uid };
+
+            dispatch(setUser(user));
+
+            try {
+
+                // Create userProfile record in firestore
+                setDoc(doc(firestore, 'users', user.uid), {
+                    email: user.email,
+                    firstName: '',
+                    lastName: '',
+                    phoneNumber: '',
+                    address: '',
+                    isCompletedInitialSetup: false,
+                    profilePicture: '',
+                    createdAt: new Date()
+                });
+
+                Alert.alert('Success', 'Account created successfully, Please upload your profile picture and continue')
+
+                router.push('/upload-profile-picture');
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+            setIsLoading(false);
+
+            // dispatch(setUser(user));
+        } catch (error: any) {
+            console.error(error);
+            setRegisterError(getSignUpErrorMessage(error.code))
+
+            setIsLoading(false);
+        }
 
     }
+
 
     // Navigate to login page
     const handleNavigateToLogin = () => {
@@ -44,6 +97,9 @@ const SignUp = () => {
                             Welcome
                         </Text>
                         <Text className='text-subText text-sm text-center mt-5 font-natoSan400'>Welcome to your Portal</Text>
+                        {
+                            registerError && <MessageAlert message={registerError} variant='error' />
+                        }
                     </View>
                     <Formik
                         initialValues={{ email: '', password: '', confirmPassword: '' }}
@@ -97,13 +153,20 @@ const SignUp = () => {
                                 <View className='min-w-full mt-20'>
                                     <CustomButton
                                         onPress={handleSubmit}
-                                        label={<>Sign Up <Image source={icons.rightArrow}
-                                            className='w-[13px] h-[13px]' /></>}
+                                        disabled={isLoading}
+                                        label={
+                                            isLoading ? (
+                                                <ActivityIndicator color="white" />
+                                            ) : (
+                                                <>Sign Up <Image source={icons.rightArrow}
+                                                    className='w-[13px] h-[13px]' /></>)
+                                        }
                                         variant='Button'
                                         classNames='w-full mb-5'
                                     />
 
                                     <CustomButton
+                                        disabled={isLoading}
                                         onPress={handleNavigateToLogin}
                                         label={<>Login <Image source={icons.rightArrow}
                                             className='w-[13px] h-[13px]' /></>}
